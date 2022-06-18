@@ -52,7 +52,16 @@ function decrypt(secretKey, originPath, destinationPath) {
         folderEncrypt.decrypt(options).then(() => {
             resolve('decrypted!');
         }).catch((err) => {
-            resolve({ error: err });
+
+            let error = "";
+            if (err.message.indexOf("Invalid tar header") != -1) {
+                error = "Password is incorrect!";
+            } else {
+                error = err;
+            }
+            resolve({ error: error });
+        }).catch((error) => {
+            resolve({ error: error });
         });
     })
     

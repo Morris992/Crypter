@@ -1,6 +1,6 @@
 {
   "name": "crypter",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A NodeJs app for encrypt/decrypt folders",
   "main": "app.js",
   "scripts": {

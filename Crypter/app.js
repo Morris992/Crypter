@@ -73,8 +73,9 @@ function start() {
                         signale.error(res.error);
                     } else {
                         signale.success(res);
-                        start();
                     }
+
+                    start();
                     //If you want to decrypt
                 } else if (mode === DECRYPT) {
 
@@ -84,8 +85,8 @@ function start() {
                         signale.error(res.error);
                     } else {
                         signale.success(res);
-                        start();
                     }
+                    start();
                 } else {
                     signale.error("This mode not exist");
                     start();
