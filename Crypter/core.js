@@ -1,5 +1,9 @@
 const folderEncrypt = require("folder-encrypt") // library for encrypt/decrypt folders
 const signale = require('signale'); //library to insert status report
+const inquirer = require('inquirer'); //library for use interavtive commands
+const fs = require('fs');
+
+const ENCRYPT = "E";
 
 /**
  * Encrypt data
@@ -11,7 +15,7 @@ const signale = require('signale'); //library to insert status report
 function encrypt(secretKey, originPath, destinationPath) {
     return new Promise(async (resolve) => {
 
-        signale.info("Waiting...");
+        signale.info("Attendi...");
 
         //if not passed chiper property, on default will be crypter at sha256
         const options = {
@@ -23,7 +27,7 @@ function encrypt(secretKey, originPath, destinationPath) {
         }
 
         folderEncrypt.encrypt(options).then(() => {
-            resolve('encrypted!');
+            resolve('Contenuto criptato correttamente!');
         }).catch((err) => {
             resolve({ error: err });
         });
@@ -39,23 +43,23 @@ function encrypt(secretKey, originPath, destinationPath) {
  */
 function decrypt(secretKey, originPath, destinationPath) {
     return new Promise(async (resolve) => {
-        signale.info("Waiting...");
+        signale.info("Attendi...");
 
         const options = {
             password: secretKey,
-            input: originPath + ".encrypted"
+            input: originPath
         }
         if(destinationPath)    {
             options["output"] = destinationPath // optional, default will be input path with extension `encrypted`
         }
 
         folderEncrypt.decrypt(options).then(() => {
-            resolve('decrypted!');
+            resolve('File decriptato correttamente!');
         }).catch((err) => {
 
             let error = "";
             if (err.message.indexOf("Invalid tar header") != -1) {
-                error = "Password is incorrect!";
+                error = "La password non è corretta!";
             } else {
                 error = err;
             }
@@ -67,7 +71,67 @@ function decrypt(secretKey, originPath, destinationPath) {
     
 }
 
+/**
+ * Get the content of dir and ask the selected one
+ * @param {any} dir -> directory path
+ * @param {any} mode -> mode: entrypt or decript
+ */
+function askListDirectory(dir, mode) {
+    return new Promise(async (resolve) => {
+
+        // list all files in the directory
+        try {
+
+            let msg = "";
+            if (mode === ENCRYPT) {
+                msg = "Seleziona la cartella da criptare. Ctrl+C per uscire";
+            } else {
+                msg = "Seleziona il file da decriptare. Ctrl+C per uscire";
+            }
+            const files = fs.readdirSync(dir);
+            let choices = [];
+
+            files.forEach(file => {
+
+                if (mode === ENCRYPT) {
+                    if (file.indexOf(".") == -1) {
+
+                        choices.push({ "name": file, "value": file });
+                    }
+                } else {
+                    if (file.indexOf(".encrypted") !== -1) {
+
+                        choices.push({ "name": file, "value": file });
+                    }
+                }
+                
+            })
+
+            inquirer.prompt([
+                {
+                    type: 'list',
+                    message: msg,
+                    name: 'nameFile',
+                    choices: choices
+                }
+            ]).then(async answer => {
+
+                const nameFile = answer.nameFile;
+
+                resolve(nameFile);
+
+
+            })
+
+        } catch (err) {
+            console.log(err);
+        }
+    })
+}
+
+
 module.exports =    {
     encrypt: encrypt,
-    decrypt: decrypt
+    decrypt: decrypt,
+    askListDirectory: askListDirectory
 }
