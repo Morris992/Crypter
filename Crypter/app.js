@@ -12,7 +12,7 @@ start();
 
 function start() {
 
-    //Ask username and password for MongoDB
+    //Ask mode
     inquirer.prompt([
         {
             type: 'list',
@@ -31,7 +31,7 @@ function start() {
             ]
         }
     ])
-        .then(async answer1 => { // answer contain username and password property ( name property of question )
+        .then(async answer1 => { // answer contain mode selected
 
             //Get mode (encrypt/decrypt)
             const mode = answer1.mode.toUpperCase();
@@ -73,7 +73,7 @@ function start() {
 
                     }
 
-                    //Ask username and password for MongoDB
+                    //Ask destination path
                     inquirer.prompt([
                         {
                             // parameters

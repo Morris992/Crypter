@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bluetooth-serial-port": "^3.0.0",
+    "window-size": "^1.1.1"
+  }
+}

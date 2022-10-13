@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Morris992/Crypter.git"
+    "url": "git+https://github.com/MorrisPenasso/Crypter.git"
   },
-  "author": "Morris992",
+  "author": "MorrisPenasso",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Morris992/Crypter/issues"
+    "url": "https://github.com/MorrisPenasso/Crypter/issues"
   },
-  "homepage": "https://github.com/Morris992/Crypter#readme",
+  "homepage": "https://github.com/MorrisPenasso/Crypter#readme",
   "dependencies": {
     "cfonts": "^2.10.0",
     "chai": "^4.1.2",
